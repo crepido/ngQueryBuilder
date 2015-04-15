@@ -1,8 +1,8 @@
-﻿/// <reference path="../typings/jquery/jquery.d.ts" />
+/// <reference path="../typings/jquery/jquery.d.ts" />
 /// <reference path="../typings/linq/linq.d.ts" />
 
 module tsApp {
-    interface TreeNode {
+    export interface TreeNode {
 
     }
 
@@ -59,7 +59,7 @@ module tsApp {
         }
     }
 
-    class Generator {
+    export class Generator {
         generate(queryRoot: Group): any { throw "Not Implemented!" }
 
         public knownDocuments: Array<DocumentType> = [
@@ -140,7 +140,7 @@ module tsApp {
 
         generateRule(rule: Rule) {
             if (!rule.field) {
-                throw "Field wwis mandatory!";
+                throw "Field is mandatory!";
             }
 
             //var selectedField = super.getField(rule.field);
@@ -167,7 +167,7 @@ module tsApp {
         }
     }
 
-    class DocumentType {
+    export class DocumentType {
         name: string;
         fields: Array<Field>;
 
@@ -177,13 +177,13 @@ module tsApp {
         }
     }
 
-    enum FieldTypes {
+    export enum FieldTypes {
         string,
         int,
         bool
     }
 
-    class Field {
+    export class Field {
         name: string;
         type: FieldTypes;
 

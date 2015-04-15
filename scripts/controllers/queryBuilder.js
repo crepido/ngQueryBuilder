@@ -83,7 +83,12 @@ angular.module('testAppApp')
         $scope.data = app.createTestData();
 
 
-    });
+    })
+    .directive('ngQueryBuilder', function() {
+        return {
+            templateUrl: 'views/ngQueryBuilder.html'
+        };
+    })
 
 (function ($scope, $) {
     

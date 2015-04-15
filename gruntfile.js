@@ -32,6 +32,9 @@ module.exports = function (grunt) {
                     paths: ["Assets"]
                 },
                 files: { "wwwroot/css/base.css": "styles/base.less" }
+            },
+            dist: {
+                files: { "dist/css/base.css": "styles/base.less" }
             }
         },
         
@@ -45,6 +48,16 @@ module.exports = function (grunt) {
                         "views/*.html",
                         "scripts/*.js",
                         "scripts/controllers/*.js"
+                    ]
+                }]
+            },
+            
+            dist: {
+                files: [{
+                    dest: "dist/",
+                    expand: true,
+                    src: [
+                        "scripts/test.ts"
                     ]
                 }]
             }
@@ -67,6 +80,19 @@ module.exports = function (grunt) {
                     basePath: '',
                     sourcemap: false,
                     declaration: false,
+                    ignoreError: false
+                }
+            },
+            
+            dist: {
+                src: ["scripts/**/*.ts"],
+                dest: "dist/",
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    basePath: '',
+                    declaration: true,
+                    sourceMap: true,
                     ignoreError: false
                 }
             }
@@ -100,12 +126,47 @@ module.exports = function (grunt) {
                     base: 'wwwroot/'
                 }
             }
+        },
+        
+        uglify: {
+            dist: {
+                files: {
+                    'dist/scripts/test.min.js': ['dist/scripts/test.js']
+                }
+            }
+        },
+        
+        cssmin: {
+            options: {
+                sourceMap: true
+            },
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/css',
+                    src: ['*.css', '!*.min.css'],
+                    dest: 'dist/css',
+                    ext: '.min.css'
+                }]
+            }
+        },
+        
+        clean: ["dist/"],
+        
+        autoprefixer: {
+            dist: {
+                src: 'dist/css/base.css'
+            }
         }
+        
     });
 
     // This command registers the default task which will install bower packages into wwwroot/lib
     grunt.registerTask("default", ["bower:install"]);
 
+    grunt.registerTask("clean", [
+        "clean"
+    ]);
     grunt.registerTask("server", [
         "bower:install",
         "wiredep",
@@ -123,6 +184,17 @@ module.exports = function (grunt) {
         "less",
         "typescript"
     ]);
+    
+    grunt.registerTask("dist", [
+        //"bower:install",
+        //"wiredep",
+        "copy:dist",
+        "less:dist",
+        "typescript:dist",
+        "uglify:dist",
+        "autoprefixer",
+        "cssmin"
+    ]);
 
     // The following line loads the grunt plugins.
     // This line needs to be at the end of this this file.
@@ -134,4 +206,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-autoprefixer');
 };
