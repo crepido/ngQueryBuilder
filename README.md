@@ -1,5 +1,5 @@
 # ngQueryBuilder
 
-Setup
+## Setup
 1. Something
 2. smomesg
