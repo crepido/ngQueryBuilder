@@ -86,7 +86,7 @@ module tsApp {
         constructor() {
         }    
 
-        getField(name: string): Field {
+        getField(name: string): void {
             /*
             return Enumerable.From<Field>(this.selectedDocumentType.fields)
                 .Where(x => x.name == name)
@@ -140,7 +140,7 @@ module tsApp {
 
         generateRule(rule: Rule) {
             if (!rule.field) {
-                throw "Field is mandatory!";
+                throw "Field wwis mandatory!";
             }
 
             //var selectedField = super.getField(rule.field);

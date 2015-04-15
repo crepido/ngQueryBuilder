@@ -3,6 +3,9 @@ This file in the main entry point for defining grunt tasks and using grunt plugi
 Click here to learn more. http://go.microsoft.com/fwlink/?LinkID=513275&clcid=0x409
 */
 module.exports = function (grunt) {
+    var port = process.env.PORT;
+    var ip = process.env.IP;
+    
     grunt.initConfig({
         //Moves all bower components to lib folder in wwwroot
         bower: {
@@ -87,12 +90,32 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['copy']
             },
+        },
+        
+        connect: {
+            server: {
+                options: {
+                    port: port,
+                    hostname: ip,
+                    base: 'wwwroot/'
+                }
+            }
         }
     });
 
     // This command registers the default task which will install bower packages into wwwroot/lib
     grunt.registerTask("default", ["bower:install"]);
 
+    grunt.registerTask("server", [
+        "bower:install",
+        "wiredep",
+        "copy",
+        "less",
+        "typescript",
+        "connect",
+        "watch"
+    ]);
+    
     grunt.registerTask("build", [
         "bower:install",
         "wiredep",
@@ -110,5 +133,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-wiredep");
     grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks("grunt-contrib-watch");
-
+    grunt.loadNpmTasks('grunt-contrib-connect');
 };
