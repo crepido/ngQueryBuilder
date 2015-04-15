@@ -1,0 +1,94 @@
+﻿
+<div id="uiTree">
+    <script type="text/ng-template" id="nodes_renderer.html">
+        
+        <div ui-tree-handle class="tree-node tree-node-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" ng-model="node.field" placeholder="Field Name" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <select ng-model="node.comparison" ng-options="o.operator as o.name for o in $parent.comparisonOperators" class="form-control"></select>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" ng-model="node.value" placeholder="Value" class="form-control" />
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-danger pull-right">-</button>
+                    </div>
+                </div>
+            </div>      
+        </div>
+        <!--<div class="groupSettings" ng-show="{{node.hasChildren()}}">Group Settings2 AND/OR</div>-->
+        <ol ui-tree-nodes="" ng-model="node.nodes">
+            <li class="groupSettings" ng-show="{{node.hasChildren()}}">
+                <div class="btn-group">
+                    <label class="btn btn-primary" ng-model="node.logicalOperator" btn-radio="'And'">And</label>
+                    <label class="btn btn-primary" ng-model="node.logicalOperator" btn-radio="'Or'">Or</label>
+                </div>
+                <button type="button" class="btn btn-info pull-right" ng-click="node.add()">+</button>
+            </li>
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+            </li>
+        </ol>
+    </script>
+    <div ui-tree="treeOptions" id="tree-root">
+        <ol ui-tree-nodes="" ng-model="data">
+            <li ng-repeat="node in data">
+                <ol ui-tree-nodes="" ng-model="node.nodes">
+                    <li class="groupSettings">
+                        <div class="btn-group">
+                            <label class="btn btn-primary" ng-model="node.logicalOperator" btn-radio="'And'">And</label>
+                            <label class="btn btn-primary" ng-model="node.logicalOperator" btn-radio="'Or'">Or</label>
+                        </div>
+
+                        <button type="button" class="btn btn-info pull-right" ng-click="node.add()">+</button>
+                    </li>
+                    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                </ol>
+            </li>
+        </ol>
+        <!--<div class="groupSettings">Group Settings2 AND/OR</div>-->
+        <!--<ol ui-tree-nodes="" ng-model="data">
+            <li class="groupSettings">Group Settings AND/OR</li>
+            <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+        </ol>-->
+    </div>
+    <pre>
+        {{jsonData}}
+    </pre>
+</div>
+
+
+<h2>Create Query</h2>
+Name: <input type="text" ng-model="query.name" />
+<table style="width: 100%">
+    <tr>
+        <th>Logical</th>
+        <th>Field</th>
+        <th>Operator</th>
+        <th>Value</th>
+    </tr>
+    <tr ng-repeat="rule in query.rules">
+        <td>
+            <select ng-model="rule.logical" ng-options="o.operator as o.name for o in $parent.logicalOperators"></select>
+        </td>
+        <td>
+            <input type="text" ng-model="rule.field" />
+        </td>
+        <td>
+            <select ng-model="rule.comparison" ng-options="o.operator as o.name for o in $parent.comparisonOperators"></select>
+        </td>
+        <td>
+            <input type="text" ng-model="rule.value" />
+        </td>
+    </tr>
+    <tr>
+        <td ng-click="query.addRule()" colspan="4">Add</td>
+    </tr>
+</table>
+
+<pre>
+{{jsonQuery}}
+</pre>

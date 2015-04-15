@@ -1,0 +1,72 @@
+﻿<h2>Create Query</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <b>Query Name:</b>
+            <input type="text" ng-model="queryName" placeholder="Query Name" class="form-control input-sm" />
+        </div>
+        <div class="col-md-4">
+            <b>Document Type:</b>
+            <select ng-model="generator.selectedDocumentType" ng-options="o as o.name for o in generator.knownDocuments" class="form-control input-sm"></select>
+        </div>
+    </div>
+</div>
+<div id="uiTree" ui-tree callbacks="treeOptions">
+
+    <script type="text/ng-template" id="groupTemplate">
+        <div ng-if="isRule(item)" ui-tree-handle class="tree-node tree-node-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" ng-model="item.field" placeholder="Field Name" tooltip="{{validationMessage}}" typeahead-editable="false" typeahead="field as (field.name + '(' + field.type + ')') for field in generator.selectedDocumentType.fields" class="form-control input-sm" />
+                    </div>
+                    <div class="col-md-2">
+                        <select ng-model="item.comparison" ng-options="o.operator as o.name for o in $parent.comparisonOperators" class="form-control input-sm"></select>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" ng-model="item.value" placeholder="Value" class="form-control input-sm" />
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-danger pull-right" ng-click="item.remove()">-</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="isGroup(item)">
+            <div class="groupSettings">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select ng-model="item.logicalOperator" ng-options="o.operator as o.name for o in $parent.logicalOperators" class="form-control input-sm"></select>
+                        </div>
+                        <div class="col-md-9">
+                            <button type="button" class="btn btn-info pull-right" ng-click="item.addGroup()">+ Group</button>
+                            <button type="button" class="btn btn-info pull-right" ng-click="item.addRule()">+ Rule</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                        
+            <ol ui-tree-nodes ng-model="item.items">
+                <li ng-repeat="item in item.items" ui-tree-node ng-include="'groupTemplate'">
+                </li>
+            </ol>
+        </div>
+    </script>
+
+    <ol ui-tree-nodes ng-model="data">
+        <li ng-repeat="item in data" ui-tree-node ng-include="'groupTemplate'"></li>
+    </ol>
+
+    
+</div>
+
+<pre>
+    {{jsonQuery}}
+</pre>
+
+<!--<pre>
+    {{jsonData}}
+</pre>-->
