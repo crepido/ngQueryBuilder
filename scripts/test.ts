@@ -165,6 +165,73 @@ module tsApp {
             query[rule.field.name][rule.comparison] = value;
             return query;
         }
+        
+        generateReadable(group: Group) : string {
+            if (!this.selectedDocumentType)
+                throw "Document Type is mandatory!";
+
+            if (!group.logicalOperator)
+                throw "Logical Operator is mandatory!";
+            
+            var subQueries = new Array<string>();
+            $.each(group.items,(i, item) => {
+                if (item instanceof Group) {
+                    subQueries.push(this.generateReadable(item));
+                }
+                else if (item instanceof Rule) {
+                    subQueries.push(this.generateReadableRule(item));
+                }
+            });
+            
+            var operator = "?";
+            $.each(this.logicalOperators, (i, item) => {
+                if(item.operator === group.logicalOperator) {
+                    if(item.name == "And") 
+                        operator = "&&";
+                    else if(item.name == "Or") 
+                        operator = "||";
+                    else
+                        operator = item.name;
+                    
+                    return false;
+                } 
+                return true;
+            });
+
+            return "(" + subQueries.join(" " + operator + " ") + ")";
+        }
+        
+        generateReadableRule(rule: Rule) : string {
+            if (!rule.field) {
+                throw "Field is mandatory!";
+            }
+
+            if (!rule.comparison)
+                throw "Comparison is mandatory!";
+
+            if (!rule.value)
+                throw "Value is mandatory!";
+
+
+            var value: any = rule.value;
+            if (rule.field.type === FieldTypes.int) {
+                value = parseInt(rule.value);
+            }
+            else if (rule.field.type === FieldTypes.bool) {
+                value = "true" === rule.value.toLowerCase();
+            }
+
+            var operator = "?";
+            $.each(this.comparisonOperators, (i, item) => {
+                if(item.operator === rule.comparison) {
+                    operator = item.name;
+                    return false;
+                } 
+                return true;
+            });
+            
+            return rule.field.name + " " + operator + " " + value;
+        }
     }
 
     export class DocumentType {
@@ -186,11 +253,14 @@ module tsApp {
     export class Field {
         name: string;
         type: FieldTypes;
+        displayName: string;
 
         constructor(name: string, type: FieldTypes) {
             this.name = name;
             this.type = type;
+            this.displayName = name + "(" + FieldTypes[type] + ")";
         }
+        
     }
 
     

@@ -25,6 +25,8 @@ angular.module('testAppApp')
 
         $scope.jsonQuery = "";
         $scope.jsonData = "";
+        $scope.readable = "";
+        $scope.queryString = "";
         $scope.$watch(function () {
             function skipParent(key, value) {
                 if (value && key === "parent")
@@ -39,6 +41,10 @@ angular.module('testAppApp')
                 $scope.jsonQuery = $scope.queryName + "\n" +
                     $scope.generator.selectedDocumentType.name + "\n" +
                     JSON.stringify(query, null, 4);
+                    
+                $scope.readable = generator.generateReadable($scope.data[0]);
+                
+                $scope.queryString = $.param(query);
             }
             catch (e) {
                 $scope.jsonQuery = e;
@@ -79,55 +85,47 @@ angular.module('testAppApp')
                 movedObject.parent = destParent;
             }
         };
+        
+        function createTestData() {
+            var fields = generator.selectedDocumentType.fields;
+            var group = new tsApp.QueryRoot();
+            group.addRule();
+            group.addRule();
+            group.addGroup();
+            group.addRule();
+            
+            group.items[0].field = fields[0];
+            group.items[0].comparison = "$ne";
+            group.items[0].value = "Some Text";
+            
+            group.items[1].field = fields[1];
+            group.items[1].comparison = "$eq";
+            group.items[1].value = "5";
+            
+            group.items[3].field = fields[4];
+            group.items[3].comparison = "$eq";
+            group.items[3].value = "true";
+            
+            var subGroup = group.items[2];
+            subGroup.addRule();
+            
+            subGroup.items[0].field = fields[2];
+            subGroup.items[0].comparison = "$gt";
+            subGroup.items[0].value = "321";
+            
+            subGroup.items[1].field = fields[3];
+            subGroup.items[1].comparison = "$lte";
+            subGroup.items[1].value = "123";
+    
+            return [
+                group
+            ];
+        }
 
-        $scope.data = app.createTestData();
-
-
+        $scope.data = createTestData();
     })
     .directive('ngQueryBuilder', function() {
         return {
             templateUrl: 'views/ngQueryBuilder.html'
         };
-    })
-
-(function ($scope, $) {
-    
-    $scope.createTestData = function() {
-        var group = new tsApp.QueryRoot();
-        group.addRule();
-
-        //var sub = [
-        //    new tsApp.Rule({
-        //        title: "Rule 1",
-        //        field: "Field1",
-        //        value: "Value1",
-        //        parent: group
-        //    }),
-        //    new tsApp.Group({
-        //        title: "Group 2",
-        //        parent: group,
-        //        items: []
-        //    }),
-        //    new tsApp.Rule({
-        //        title: "Rule 2",
-        //        field: "Field2",
-        //        value: "Value2",
-        //        parent: group
-        //    })
-        //];
-        //group.items = sub;
-
-        //var subRule = new tsApp.Rule({
-        //    title: "Rule 2.1",
-        //    field: "Field2.1",
-        //    value: "Value2.1",
-        //    parent: sub[1]
-        //});
-        //sub[1].items.push(subRule);
-
-        return [
-            group
-        ];
-    };
-    
-}(window.app = window.app || {}, jQuery))
+    });

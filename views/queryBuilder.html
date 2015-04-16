@@ -1,5 +1,5 @@
 <h2>Create Query</h2>
-<ng-query-builder></ng-query-builder>
+<!--<ng-query-builder></ng-query-builder>-->
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" ng-model="item.field" placeholder="Field Name" tooltip="{{validationMessage}}" typeahead-editable="false" typeahead="field as (field.name + '(' + field.type + ')') for field in generator.selectedDocumentType.fields" class="form-control input-sm" />
+                        <input type="text" ng-model="item.field" placeholder="Field Name" tooltip="{{validationMessage}}" typeahead-editable="false" typeahead="field as field.displayName for field in generator.selectedDocumentType.fields" class="form-control input-sm" />
                     </div>
                     <div class="col-md-2">
                         <select ng-model="item.comparison" ng-options="o.operator as o.name for o in $parent.comparisonOperators" class="form-control input-sm"></select>
@@ -60,14 +60,34 @@
     <ol ui-tree-nodes ng-model="data">
         <li ng-repeat="item in data" ui-tree-node ng-include="'groupTemplate'"></li>
     </ol>
-
-    
 </div>
 
-<pre>
-    {{jsonQuery}}
-</pre>
+<div role="tabpanel">
 
-<!--<pre>
-    {{jsonData}}
-</pre>-->
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Code Style</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Json Query</a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Query String</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <code>
+            {{readable}}
+        </code>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile">
+        <pre>
+            {{jsonQuery}}
+        </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="messages">
+        <pre>
+            {{queryString}}
+        </pre>
+    </div>
+  </div>
+
+</div>

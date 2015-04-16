@@ -101,11 +101,11 @@ module.exports = function (grunt) {
         watch: {
             less: {
                 files: ['styles/*.less'],
-                tasks: ['less']
+                tasks: ['less:dev']
             },
             typescript: {
                 files: ['scripts/**/*.ts'],
-                tasks: ['typescript']
+                tasks: ['typescript:dev']
             },
             js: {
                 files: [
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
                     "scripts/*.js",
                     "scripts/controllers/*.js"
                 ],
-                tasks: ['copy']
+                tasks: ['copy:dev']
             },
         },
         
@@ -170,9 +170,9 @@ module.exports = function (grunt) {
     grunt.registerTask("server", [
         "bower:install",
         "wiredep",
-        "copy",
-        "less",
-        "typescript",
+        "copy:dev",
+        "less:dev",
+        "typescript:dev",
         "connect",
         "watch"
     ]);
@@ -180,14 +180,15 @@ module.exports = function (grunt) {
     grunt.registerTask("build", [
         "bower:install",
         "wiredep",
-        "copy",
-        "less",
-        "typescript"
+        "copy:dev",
+        "less:dev",
+        "typescript:dev"
     ]);
     
     grunt.registerTask("dist", [
         //"bower:install",
         //"wiredep",
+        "clean",
         "copy:dist",
         "less:dist",
         "typescript:dist",
