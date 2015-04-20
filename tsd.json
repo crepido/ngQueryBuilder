@@ -10,6 +10,9 @@
         },
         "linq/linq.d.ts": {
             "commit": "b0056383b51495b373a32b791de8112fcafe2ace"
+        },
+        "angularjs/angular.d.ts": {
+            "commit": "1957eb54fbb7ef0d0397c2c78a5b5e638e813ec8"
         }
     }
 }

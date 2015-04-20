@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-4">
             <b>Document Type:</b>
-            <select ng-model="generator.selectedDocumentType" ng-options="o as o.name for o in generator.knownDocuments" class="form-control input-sm"></select>
+            <select ng-model="selectedDocumentType" ng-options="o as o.name for o in queryService.knownDocuments" class="form-control input-sm"></select>
         </div>
     </div>
 </div>
@@ -19,10 +19,10 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" ng-model="item.field" placeholder="Field Name" tooltip="{{validationMessage}}" typeahead-editable="false" typeahead="field as field.displayName for field in generator.selectedDocumentType.fields" class="form-control input-sm" />
+                        <input type="text" ng-model="item.field" placeholder="Field Name" tooltip="{{validationMessage}}" typeahead-editable="false" typeahead="field as field.displayName for field in selectedDocumentType.fields" class="form-control input-sm" />
                     </div>
                     <div class="col-md-2">
-                        <select ng-model="item.comparison" ng-options="o.operator as o.name for o in $parent.comparisonOperators" class="form-control input-sm"></select>
+                        <select ng-model="item.comparison" ng-options="o as o.name for o in $parent.queryService.comparisonOperators" class="form-control input-sm"></select>
                     </div>
                     <div class="col-md-5">
                         <input type="text" ng-model="item.value" placeholder="Value" class="form-control input-sm" />
@@ -39,7 +39,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-3">
-                            <select ng-model="item.logicalOperator" ng-options="o.operator as o.name for o in $parent.logicalOperators" class="form-control input-sm"></select>
+                            <select ng-model="item.logicalOperator" ng-options="o as o.name for o in $parent.queryService.logicalOperators" class="form-control input-sm"></select>
                         </div>
                         <div class="col-md-9">
                             <button type="button" class="btn btn-info pull-right" ng-click="item.addGroup()">+ Group</button>

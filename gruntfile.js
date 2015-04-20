@@ -1,4 +1,4 @@
-﻿/*
+/*
 This file in the main entry point for defining grunt tasks and using grunt plugins.
 Click here to learn more. http://go.microsoft.com/fwlink/?LinkID=513275&clcid=0x409
 */
@@ -19,6 +19,7 @@ module.exports = function (grunt) {
             }
         },
 
+        
         bowerInstall: {
             target: {
                 src: ["index.html"]
@@ -38,6 +39,7 @@ module.exports = function (grunt) {
             }
         },
         
+        //Copies files to specific destination folder
         copy: {
             dev: {
                 files: [{
@@ -63,6 +65,7 @@ module.exports = function (grunt) {
             }
         },
         
+        //Adds references to bower components in html file
         wiredep: {            
             dev: {
                 src: ["index.html"],
@@ -70,6 +73,7 @@ module.exports = function (grunt) {
             }
         },
         
+        //Compiles TypeScript to JavaScript 
         typescript: {
             dev: {
                 src: ["scripts/**/*.ts"],
@@ -98,6 +102,7 @@ module.exports = function (grunt) {
             }
         },
         
+        //Listens on file changes and runs tasks if file is changed.
         watch: {
             less: {
                 files: ['styles/*.less'],
@@ -118,6 +123,7 @@ module.exports = function (grunt) {
             },
         },
         
+        //Sets up simple webserver
         connect: {
             server: {
                 options: {
@@ -128,14 +134,16 @@ module.exports = function (grunt) {
             }
         },
         
+        //Minification JavaScript
         uglify: {
             dist: {
                 files: {
-                    'dist/scripts/test.min.js': ['dist/scripts/test.js']
+                    'dist/scripts/lib.min.js': ['dist/scripts/*.js']
                 }
             }
         },
         
+        //Minification CSS
         cssmin: {
             options: {
                 sourceMap: true
@@ -151,8 +159,10 @@ module.exports = function (grunt) {
             }
         },
         
+        //Removes everything in folder
         clean: ["dist/"],
         
+        //Adds missing browser specific prefixes for CSS3
         autoprefixer: {
             dist: {
                 src: 'dist/css/base.css'
@@ -186,8 +196,6 @@ module.exports = function (grunt) {
     ]);
     
     grunt.registerTask("dist", [
-        //"bower:install",
-        //"wiredep",
         "clean",
         "copy:dist",
         "less:dist",
@@ -196,9 +204,12 @@ module.exports = function (grunt) {
         "autoprefixer",
         "cssmin"
     ]);
+    
+    grunt.registerTask("watch", [
+        "watch"
+    ]);
 
-    // The following line loads the grunt plugins.
-    // This line needs to be at the end of this this file.
+    // Load plugins for Grunt
     grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-bower-install");
     grunt.loadNpmTasks("grunt-contrib-less");
