@@ -16,6 +16,7 @@
     "tsd": "^0.5.7"
   },
   "dependencies": {
+    "express": "^4.12.3",
     "grunt-contrib-connect": "^0.10.1",
     "grunt-contrib-cssmin": "^0.12.2"
   }

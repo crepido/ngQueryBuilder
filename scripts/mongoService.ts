@@ -46,7 +46,7 @@ module tsApp {
                     new Field("Field3", FieldTypes.int),
                     new Field("Field4", FieldTypes.int),
                     new Field("Field5", FieldTypes.bool),
-                    new Field("Field6", FieldTypes.string),
+                    new Field("Field6", FieldTypes.float),
                 ]),
                 new DocumentType("2Document Type 2", [
                     new Field("2Field1", FieldTypes.string),
@@ -54,7 +54,7 @@ module tsApp {
                     new Field("2Field3", FieldTypes.int),
                     new Field("2Field4", FieldTypes.int),
                     new Field("2Field5", FieldTypes.bool),
-                    new Field("2Field6", FieldTypes.string),
+                    new Field("2Field6", FieldTypes.float),
                 ])
             ];
         }
@@ -73,7 +73,9 @@ module tsApp {
                     subQueries.push(this.generate(item));
                 }
                 else if (item instanceof Rule) {
-                    subQueries.push(this.generateRule(item));
+                    var ruleData = this.generateRule(item);
+                    if(ruleData)
+                        subQueries.push(ruleData);
                 }
             });
 
@@ -83,31 +85,13 @@ module tsApp {
         }
 
         generateRule(rule: Rule) {
-            if (!rule.field) {
-                throw "Field is mandatory!";
+            if (rule.isValid()) {
+                var query = {};
+                query[rule.field.name] = {};
+                query[rule.field.name][rule.comparison.operator] = rule.getConvertedValue();
+                return query;
             }
-
-            //var selectedField = super.getField(rule.field);
-
-            if (!rule.comparison)
-                throw "Comparison is mandatory!";
-
-            if (!rule.value)
-                throw "Value is mandatory!";
-
-
-            var value: any = rule.value;
-            if (rule.field.type === FieldTypes.int) {
-                value = parseInt(rule.value);
-            }
-            else if (rule.field.type === FieldTypes.bool) {
-                value = "true" === rule.value.toLowerCase();
-            }
-
-            var query = {};
-            query[rule.field.name] = {};
-            query[rule.field.name][rule.comparison.operator] = value;
-            return query;
+            return null;
         }
         
         generateReadable(group: Group) : string {
@@ -123,58 +107,43 @@ module tsApp {
                     subQueries.push(this.generateReadable(item));
                 }
                 else if (item instanceof Rule) {
-                    subQueries.push(this.generateReadableRule(item));
+                    var ruleData = this.generateReadableRule(item);
+                    if(ruleData)
+                        subQueries.push(ruleData);
                 }
             });
             
+            var invert = "";
             var operator = "?";
-            $.each(this.logicalOperators, (i, item) => {
-                if(item.operator === group.logicalOperator.operator) {
-                    if(item.name == "And") 
-                        operator = "&&";
-                    else if(item.name == "Or") 
-                        operator = "||";
-                    else
-                        operator = item.name;
-                    
-                    return false;
-                } 
-                return true;
-            });
+            if(group.logicalOperator.operator == "$and") 
+                operator = "&&";
+            else if(group.logicalOperator.operator == "$or") 
+                operator = "||";
+            else if(group.logicalOperator.operator == "$not") {
+                invert = "!";
+                operator = "&&";
+            }
+            else if(group.logicalOperator.operator == "$nor") {
+                invert = "!";
+                operator = "||";
+            }
+            else
+                operator = group.logicalOperator.name;
 
-            return "(" + subQueries.join(" " + operator + " ") + ")";
+            return invert + "(" + subQueries.join(" " + operator + " ") + ")";
         }
         
         generateReadableRule(rule: Rule) : string {
-            if (!rule.field) {
-                throw "Field is mandatory!";
+            if(rule.isValid()) {
+                var value: any = rule.getConvertedValue();
+                
+                if(rule.field.type === FieldTypes.string) {
+                    value = "\"" + rule.value + "\"";
+                }
+    
+                return rule.field.name + " " + rule.comparison.name + " " + value;
             }
-
-            if (!rule.comparison)
-                throw "Comparison is mandatory!";
-
-            if (!rule.value)
-                throw "Value is mandatory!";
-
-
-            var value: any = rule.value;
-            if (rule.field.type === FieldTypes.int) {
-                value = parseInt(rule.value);
-            }
-            else if (rule.field.type === FieldTypes.bool) {
-                value = "true" === rule.value.toLowerCase();
-            }
-
-            var operator = "?";
-            $.each(this.comparisonOperators, (i, item) => {
-                if(item.operator === rule.comparison.operator) {
-                    operator = item.name;
-                    return false;
-                } 
-                return true;
-            });
-            
-            return rule.field.name + " " + operator + " " + value;
+            return null;
         }
         
     }

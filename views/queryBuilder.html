@@ -24,11 +24,17 @@
                     <div class="col-md-2">
                         <select ng-model="item.comparison" ng-options="o as o.name for o in $parent.queryService.comparisonOperators" class="form-control input-sm"></select>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5" ng-class="{'has-error': item.valueError}">
                         <input type="text" ng-model="item.value" placeholder="Value" class="form-control input-sm" />
+                        <span ng-show="item.valueError" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                     </div>
                     <div class="col-md-1">
                         <button class="btn btn-danger pull-right" ng-click="item.remove()">-</button>
+                    </div>
+                </div>
+                <div class="row" ng-show="item.validationMessage">
+                    <div class="col-md-12 text-danger">
+                        {{item.validationMessage}}
                     </div>
                 </div>
             </div>
@@ -62,32 +68,29 @@
     </ol>
 </div>
 
-<div role="tabpanel">
-
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Code Style</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Json Query</a></li>
-    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Query String</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="home">
-        <code>
-            {{readable}}
-        </code>
+<ul class="nav nav-tabs" id="outputTabs">
+    <li class="active"><a href="#codeStyle">Code Style</a></li>
+    <li><a href="#jsonQuery">Json Query</a></li>
+    <li><a href="#queryString">Query String</a></li>
+</ul>
+<div class="tab-content">
+    <div id="codeStyle" class="tab-pane fade in active">
+        <code>{{readable}}</code>
     </div>
-    <div role="tabpanel" class="tab-pane" id="profile">
-        <pre>
-            {{jsonQuery}}
-        </pre>
+    <div id="jsonQuery" class="tab-pane fade">
+        <pre>{{jsonQuery}}</pre>
     </div>
-    <div role="tabpanel" class="tab-pane" id="messages">
-        <pre>
-            {{queryString}}
-        </pre>
+    <div id="queryString" class="tab-pane fade">
+        <pre>{{queryString}}</pre>
+        <button ng-click="executeQuery()">Execute Query</button>
+        <pre>{{queryResult}}</pre>
     </div>
-  </div>
-
 </div>
+<script type="text/javascript">
+$(document).ready(function(){ 
+    $("#outputTabs a").click(function(e){
+    	e.preventDefault();
+    	$(this).tab('show');
+    });
+});
+</script>

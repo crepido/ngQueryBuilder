@@ -138,7 +138,7 @@ module.exports = function (grunt) {
         uglify: {
             dist: {
                 files: {
-                    'dist/scripts/lib.min.js': ['dist/scripts/*.js']
+                    'dist/scripts/ngquerybuilder.min.js': ['dist/scripts/*.js']
                 }
             }
         },
@@ -160,7 +160,10 @@ module.exports = function (grunt) {
         },
         
         //Removes everything in folder
-        clean: ["dist/"],
+        clean: {
+            dist: ["dist/"],
+            dev: ["wwwroot/"]
+        },
         
         //Adds missing browser specific prefixes for CSS3
         autoprefixer: {
@@ -178,6 +181,7 @@ module.exports = function (grunt) {
         "clean"
     ]);
     grunt.registerTask("server", [
+        "clean:dev",
         "bower:install",
         "wiredep",
         "copy:dev",
@@ -196,7 +200,7 @@ module.exports = function (grunt) {
     ]);
     
     grunt.registerTask("dist", [
-        "clean",
+        "clean:dist",
         "copy:dist",
         "less:dist",
         "typescript:dist",

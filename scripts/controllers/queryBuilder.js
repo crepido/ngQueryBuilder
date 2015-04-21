@@ -82,6 +82,18 @@ angular.module('testAppApp')
             }
         };
         
+        $scope.queryResult = "";
+        $scope.executeQuery = function () {
+            $.getJSON('/executeQuery', 
+                queryService.generate($scope.data[0])
+            ).done(function(data) {
+                $scope.queryResult = JSON.stringify(data, null, 4);
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            });
+        }
+        
         function createTestData() {
             var fields = $scope.selectedDocumentType.fields;
             var operators = queryService.comparisonOperators;
@@ -112,9 +124,9 @@ angular.module('testAppApp')
             subGroup.items[0].comparison = operators[1];
             subGroup.items[0].value = "321";
             
-            subGroup.items[1].field = fields[3];
+            subGroup.items[1].field = fields[5];
             subGroup.items[1].comparison = operators[4];
-            subGroup.items[1].value = "123";
+            subGroup.items[1].value = "10.5";
     
             return [
                 group
