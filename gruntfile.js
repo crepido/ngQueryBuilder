@@ -16,6 +16,14 @@ module.exports = function (grunt) {
                     cleanTargetDir: false,
                     
                 }
+            },
+            wwwdist: {
+                options: {
+                    targetDir: "wwwdist/bower_components",
+                    layout: "byComponent",
+                    cleanTargetDir: false,
+                    
+                }
             }
         },
 
@@ -36,6 +44,9 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: { "dist/css/base.css": "styles/base.less" }
+            },
+            wwwdist: {
+                files: { "wwwdist/css/base.css": "styles/base.less" }
             }
         },
         
@@ -60,6 +71,19 @@ module.exports = function (grunt) {
                     expand: true,
                     src: [
                         "scripts/test.ts"
+                    ]
+                }]
+            },
+            
+            wwwdist: {
+                files: [{
+                    dest: "wwwdist/",
+                    expand: true,
+                    src: [
+                        "*.html",
+                        "views/*.html",
+                        "scripts/*.js",
+                        "scripts/controllers/*.js"
                     ]
                 }]
             }
@@ -97,6 +121,19 @@ module.exports = function (grunt) {
                     basePath: '',
                     declaration: true,
                     sourceMap: true,
+                    ignoreError: false
+                }
+            },
+            
+            wwwdist: {
+                src: ["scripts/**/*.ts"],
+                dest: "wwwdist/",
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    basePath: '',
+                    sourcemap: false,
+                    declaration: false,
                     ignoreError: false
                 }
             }
@@ -162,7 +199,8 @@ module.exports = function (grunt) {
         //Removes everything in folder
         clean: {
             dist: ["dist/"],
-            dev: ["wwwroot/"]
+            dev: ["wwwroot/"],
+            wwwdist: ["wwwdist/"]
         },
         
         //Adds missing browser specific prefixes for CSS3
@@ -170,7 +208,27 @@ module.exports = function (grunt) {
             dist: {
                 src: 'dist/css/base.css'
             }
-        }
+        },
+        
+        useminPrepare: {
+            html: 'wwwdist/index.html',
+            options: {
+                dest: 'wwwdist/',
+                flow: {
+                    html: {
+                        steps: {
+                            js: ['concat', 'uglifyjs'],
+                            css: ['cssmin']
+                        },
+                        post: {}
+                    }
+                }
+            }
+        },
+        
+        usemin: {
+            html: ['wwwdist/index.html']
+        },
         
     });
 
@@ -212,6 +270,20 @@ module.exports = function (grunt) {
     grunt.registerTask("watch", [
         "watch"
     ]);
+    
+    grunt.registerTask("wwwdist", [
+        "clean:wwwdist",
+        "bower:wwwdist",
+        "wiredep",
+        "copy:wwwdist",
+        "less:wwwdist",
+        "typescript:wwwdist",
+        "useminPrepare",
+        'concat:generated',
+        //'cssmin:generated',
+        'uglify:generated',
+        "usemin"
+    ]);
 
     // Load plugins for Grunt
     grunt.loadNpmTasks("grunt-bower-task");
@@ -226,4 +298,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-usemin');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-filerev');
 };

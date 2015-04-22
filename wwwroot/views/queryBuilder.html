@@ -1,0 +1,96 @@
+<h2>Create Query</h2>
+<!--<ng-query-builder></ng-query-builder>-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <b>Query Name:</b>
+            <input type="text" ng-model="queryName" placeholder="Query Name" class="form-control input-sm" />
+        </div>
+        <div class="col-md-4">
+            <b>Document Type:</b>
+            <select ng-model="selectedDocumentType" ng-options="o as o.name for o in queryService.knownDocuments" class="form-control input-sm"></select>
+        </div>
+    </div>
+</div>
+<div id="uiTree" ui-tree callbacks="treeOptions">
+
+    <script type="text/ng-template" id="groupTemplate">
+        <div ng-if="isRule(item)" ui-tree-handle class="tree-node tree-node-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" ng-model="item.field" placeholder="Field Name" tooltip="{{validationMessage}}" typeahead-editable="false" typeahead="field as field.displayName for field in selectedDocumentType.fields" class="form-control input-sm" />
+                    </div>
+                    <div class="col-md-2">
+                        <select ng-model="item.comparison" ng-options="o as o.name for o in $parent.queryService.comparisonOperators" class="form-control input-sm"></select>
+                    </div>
+                    <div class="col-md-5" ng-class="{'has-error': item.valueError}">
+                        <input type="text" ng-model="item.value" placeholder="Value" class="form-control input-sm" />
+                        <span ng-show="item.valueError" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-danger pull-right" ng-click="item.remove()">-</button>
+                    </div>
+                </div>
+                <div class="row" ng-show="item.validationMessage">
+                    <div class="col-md-12 text-danger">
+                        {{item.validationMessage}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="isGroup(item)">
+            <div class="groupSettings">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select ng-model="item.logicalOperator" ng-options="o as o.name for o in $parent.queryService.logicalOperators" class="form-control input-sm"></select>
+                        </div>
+                        <div class="col-md-9">
+                            <button type="button" class="btn btn-info pull-right" ng-click="item.addGroup()">+ Group</button>
+                            <button type="button" class="btn btn-info pull-right" ng-click="item.addRule()">+ Rule</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                        
+            <ol ui-tree-nodes ng-model="item.items">
+                <li ng-repeat="item in item.items" ui-tree-node ng-include="'groupTemplate'">
+                </li>
+            </ol>
+        </div>
+    </script>
+
+    <ol ui-tree-nodes ng-model="data">
+        <li ng-repeat="item in data" ui-tree-node ng-include="'groupTemplate'"></li>
+    </ol>
+</div>
+
+<ul class="nav nav-tabs" id="outputTabs">
+    <li class="active"><a href="#codeStyle">Code Style</a></li>
+    <li><a href="#jsonQuery">Json Query</a></li>
+    <li><a href="#queryString">Query String</a></li>
+</ul>
+<div class="tab-content">
+    <div id="codeStyle" class="tab-pane fade in active">
+        <code>{{readable}}</code>
+    </div>
+    <div id="jsonQuery" class="tab-pane fade">
+        <pre>{{jsonQuery}}</pre>
+    </div>
+    <div id="queryString" class="tab-pane fade">
+        <pre>{{queryString}}</pre>
+        <button ng-click="executeQuery()">Execute Query</button>
+        <pre>{{queryResult}}</pre>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){ 
+    $("#outputTabs a").click(function(e){
+    	e.preventDefault();
+    	$(this).tab('show');
+    });
+});
+</script>
