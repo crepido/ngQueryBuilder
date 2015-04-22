@@ -70,6 +70,13 @@ var tsApp;
                 this.valueError = true;
                 return false;
             }
+            else if (this.field.type === 4 /* dateTime */) {
+                if (this.value instanceof Date)
+                    return true;
+                this.validationMessage = "Date & Time is Required!";
+                this.valueError = true;
+                return false;
+            }
             return true;
         };
         Rule.prototype.getConvertedValue = function () {
@@ -81,6 +88,9 @@ var tsApp;
             }
             else if (this.field.type === 3 /* bool */) {
                 return "true" === this.value.toLowerCase();
+            }
+            else if (this.field.type === 4 /* dateTime */) {
+                return "ISODate(\"" + this.value.toISOString() + "\")";
             }
             else {
                 return this.value;
@@ -126,6 +136,7 @@ var tsApp;
         FieldTypes[FieldTypes["int"] = 1] = "int";
         FieldTypes[FieldTypes["float"] = 2] = "float";
         FieldTypes[FieldTypes["bool"] = 3] = "bool";
+        FieldTypes[FieldTypes["dateTime"] = 4] = "dateTime";
     })(tsApp.FieldTypes || (tsApp.FieldTypes = {}));
     var FieldTypes = tsApp.FieldTypes;
     var Field = (function () {

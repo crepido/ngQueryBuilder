@@ -13,8 +13,7 @@ module.exports = function (grunt) {
                 options: {
                     targetDir: "wwwroot/bower_components",
                     layout: "byComponent",
-                    cleanTargetDir: false,
-                    
+                    cleanTargetDir: false
                 }
             },
             wwwdist: {
@@ -93,7 +92,10 @@ module.exports = function (grunt) {
         wiredep: {            
             dev: {
                 src: ["index.html"],
-                ignorePath: /\b(\/dist)\b/g
+                ignorePath: /\b(\/dist)\b/g,
+                options: {
+                    src: ["styles/kendo.common.min.css"]
+                }
             }
         },
         

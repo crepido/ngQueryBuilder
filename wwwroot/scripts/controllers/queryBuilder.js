@@ -10,7 +10,10 @@
 angular.module('testAppApp')
     .controller('QueryBuilderController', ['$scope', 'queryService', 
     function ($scope, queryService) {
+        $scope.str;
+        $scope.obj;
         
+        $scope.restRoot = 'https://crepido-logger.herokuapp.com/';
         $scope.queryService = queryService;
         $scope.queryName = "Some Query";
         
@@ -79,7 +82,11 @@ angular.module('testAppApp')
                 //Get Destination Parent
                 var destParent = event.dest.nodesScope.$nodeScope.$modelValue;
                 movedObject.parent = destParent;
-            }
+            },
+            // beforeDrag: function (sourceNodeScope) {
+            //     console.log(sourceNodeScope);
+            //     console.log(this);
+            // }
         };
         
         $scope.queryResult = "";
@@ -94,6 +101,41 @@ angular.module('testAppApp')
             });
         }
         
+        $scope.testQueryResult = "";
+        $scope.testQuery = function () {
+            $.getJSON($scope.restRoot + 'logdata?callback=?', 
+                {
+                    advanceQuery: queryService.generate($scope.data[0])
+                }
+            ).done(function(data) {
+                $scope.testQueryResult = JSON.stringify(data, null, 4);
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            }).always(function() {
+                console.log(arguments);
+            });
+            
+            // $.ajax({
+            //     url: $scope.restRoot + 'logdata',
+            //     dataType: "jsonp",
+            //     //data: data,
+            //     jsonp: 'callback',
+            //     jsonpCallback: function(data) {
+            //         $scope.testQueryResult = JSON.stringify(data, null, 4);
+            //         if (!$scope.$$phase) {
+            //             $scope.$apply();
+            //         }
+            //     },
+            //     success: function(data) {
+            //         $scope.testQueryResult = JSON.stringify(data, null, 4);
+            //         if (!$scope.$$phase) {
+            //             $scope.$apply();
+            //         }
+            //     }
+            // });
+        }
+        
         function createTestData() {
             var fields = $scope.selectedDocumentType.fields;
             var operators = queryService.comparisonOperators;
@@ -101,32 +143,35 @@ angular.module('testAppApp')
             group.logicalOperator = queryService.logicalOperators[1];
             group.addRule();
             group.addRule();
-            group.addGroup();
-            group.addRule();
             
             group.items[0].field = fields[0];
-            group.items[0].comparison = operators[5];
-            group.items[0].value = "Some Text";
+            group.items[0].comparison = operators[4];
+            group.items[0].value = "5";
             
             group.items[1].field = fields[1];
             group.items[1].comparison = operators[0];
-            group.items[1].value = "5";
+            group.items[1].value = "System";
             
-            group.items[3].field = fields[4];
-            group.items[3].comparison = operators[0];
-            group.items[3].value = "true";
+            // group.addRule();
+            // group.addGroup();
+            // group.addRule();
             
-            var subGroup = group.items[2];
-            subGroup.logicalOperator = queryService.logicalOperators[1];
-            subGroup.addRule();
             
-            subGroup.items[0].field = fields[2];
-            subGroup.items[0].comparison = operators[1];
-            subGroup.items[0].value = "321";
+            // group.items[3].field = fields[4];
+            // group.items[3].comparison = operators[0];
+            // group.items[3].value = "true";
             
-            subGroup.items[1].field = fields[5];
-            subGroup.items[1].comparison = operators[4];
-            subGroup.items[1].value = "10.5";
+            // var subGroup = group.items[2];
+            // subGroup.logicalOperator = queryService.logicalOperators[1];
+            // subGroup.addRule();
+            
+            // subGroup.items[0].field = fields[2];
+            // subGroup.items[0].comparison = operators[1];
+            // subGroup.items[0].value = "321";
+            
+            // subGroup.items[1].field = fields[5];
+            // subGroup.items[1].comparison = operators[4];
+            // subGroup.items[1].value = "10.5";
     
             return [
                 group

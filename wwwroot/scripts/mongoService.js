@@ -26,6 +26,12 @@ var tsApp;
         MongoService.prototype.getKnownDocuments = function () {
             //Load with from REST service
             return [
+                new tsApp.DocumentType("Glenn Test Doc", [
+                    new tsApp.Field("Id", 1 /* int */),
+                    new tsApp.Field("System", 0 /* string */),
+                    new tsApp.Field("LogTime", 4 /* dateTime */),
+                    new tsApp.Field("Data.Severity", 1 /* int */)
+                ]),
                 new tsApp.DocumentType("Document Type 1", [
                     new tsApp.Field("Field1", 0 /* string */),
                     new tsApp.Field("Field2", 0 /* string */),

@@ -40,6 +40,12 @@ module tsApp {
         getKnownDocuments() : Array<DocumentType> {
             //Load with from REST service
             return [
+                new DocumentType("Glenn Test Doc", [
+                    new Field("Id", FieldTypes.int),
+                    new Field("System", FieldTypes.string),
+                    new Field("LogTime", FieldTypes.dateTime),
+                    new Field("Data.Severity", FieldTypes.int)
+                ]),
                 new DocumentType("Document Type 1", [
                     new Field("Field1", FieldTypes.string),
                     new Field("Field2", FieldTypes.string),

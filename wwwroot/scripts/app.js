@@ -17,7 +17,8 @@ angular
     //'ngSanitize',
     //'ngTouch',
     'ui.bootstrap',
-    'ui.tree'
+    'ui.tree',
+    'kendo.directives'
   ])
   .config(function ($routeProvider) {
       $routeProvider

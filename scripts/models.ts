@@ -23,7 +23,7 @@ module tsApp {
         public parent: Group;
         public field: Field = null;
         public comparison: Operator = null;
-        public value: string = "";
+        public value: any = "";
         
         public validationMessage: string = "";
         public fieldError: boolean = false;
@@ -88,6 +88,14 @@ module tsApp {
                 this.valueError = true;
                 return false;
             }
+            else if (this.field.type === FieldTypes.dateTime) {
+                if(this.value instanceof Date)
+                    return true;
+                    
+                this.validationMessage = "Date & Time is Required!"
+                this.valueError = true;
+                return false;
+            }
             
             return true;
         }
@@ -101,6 +109,9 @@ module tsApp {
             }
             else if (this.field.type === FieldTypes.bool) {
                 return "true" === this.value.toLowerCase();
+            }
+            else if (this.field.type === FieldTypes.dateTime) {
+                return "ISODate(\"" + this.value.toISOString() + "\")";
             }
             else {
                 return this.value;
@@ -152,7 +163,8 @@ module tsApp {
         string,
         int,
         float,
-        bool
+        bool,
+        dateTime
     }
 
     export class Field {

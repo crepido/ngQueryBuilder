@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<div id="uiTree" ui-tree callbacks="treeOptions">
+<div id="uiTree" ui-tree callbacks="treeOptions" data-drag-delay="200">
 
     <script type="text/ng-template" id="groupTemplate">
         <div ng-if="isRule(item)" ui-tree-handle class="tree-node tree-node-content">
@@ -24,7 +24,10 @@
                     <div class="col-md-2">
                         <select ng-model="item.comparison" ng-options="o as o.name for o in $parent.queryService.comparisonOperators" class="form-control input-sm"></select>
                     </div>
-                    <div class="col-md-5" ng-class="{'has-error': item.valueError}">
+                    <div data-nodrag ng-if="item.field.type == 4" class="col-md-5" ng-class="{'has-error': item.valueError}">
+                        <input kendo-date-time-picker k-ng-model="item.value" style="width: 100%" />
+                    </div>
+                    <div  ng-if="item.field.type != 4" class="col-md-5" ng-class="{'has-error': item.valueError}">
                         <input type="text" ng-model="item.value" placeholder="Value" class="form-control input-sm" />
                         <span ng-show="item.valueError" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                     </div>
@@ -72,6 +75,7 @@
     <li class="active"><a href="#codeStyle">Code Style</a></li>
     <li><a href="#jsonQuery">Json Query</a></li>
     <li><a href="#queryString">Query String</a></li>
+    <li><a href="#testQuery">Test Query</a></li>
 </ul>
 <div class="tab-content">
     <div id="codeStyle" class="tab-pane fade in active">
@@ -84,6 +88,10 @@
         <pre>{{queryString}}</pre>
         <button ng-click="executeQuery()">Execute Query</button>
         <pre>{{queryResult}}</pre>
+    </div>
+    <div id="testQuery" class="tab-pane fade">
+        <button ng-click="testQuery()">Test Query</button>
+        <pre>{{testQueryResult}}</pre>
     </div>
 </div>
 <script type="text/javascript">
