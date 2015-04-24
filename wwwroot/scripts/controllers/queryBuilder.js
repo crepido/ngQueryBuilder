@@ -13,7 +13,7 @@ angular.module('testAppApp')
         $scope.str;
         $scope.obj;
         
-        $scope.restRoot = 'https://logger-glenngbg-1.c9.io/';
+        $scope.restRoot = 'https://crepido-logger.herokuapp.com';
         $scope.queryService = queryService;
         $scope.queryName = "Some Query";
         
