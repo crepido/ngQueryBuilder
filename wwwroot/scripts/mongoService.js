@@ -50,6 +50,41 @@ var tsApp;
                 ])
             ];
         };
+        MongoService.prototype.generatePlain = function (group) {
+            var _this = this;
+            if (!group.logicalOperator)
+                throw "Logical Operator is mandatory!";
+            var subGroups = [];
+            var rules = [];
+            $.each(group.items, function (i, item) {
+                if (item instanceof tsApp.Group) {
+                    subGroups.push(_this.generatePlain(item));
+                }
+                else if (item instanceof tsApp.Rule) {
+                    var ruleData = _this.generateRulePain(item);
+                    if (ruleData)
+                        rules.push(ruleData);
+                }
+            });
+            var query = {
+                operator: group.logicalOperator.operator,
+                subGroups: subGroups,
+                rules: rules
+            };
+            return query;
+        };
+        MongoService.prototype.generateRulePain = function (rule) {
+            if (rule.isValid()) {
+                var query = {
+                    field: rule.field.name,
+                    type: rule.field.type,
+                    operator: rule.comparison.operator,
+                    value: rule.getConvertedValue()
+                };
+                return query;
+            }
+            return null;
+        };
         MongoService.prototype.generate = function (group) {
             // if (!this.selectedDocumentType)
             //     throw "Document Type is mandatory!";

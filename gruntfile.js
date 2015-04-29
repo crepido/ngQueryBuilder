@@ -29,7 +29,14 @@ module.exports = function (grunt) {
         
         bowerInstall: {
             target: {
-                src: ["index.html"]
+                src: ["index.html"],
+                ignorePath: /\b(\/dist)\b/g,
+                exclude: ['bower_components/kendo-ui-core/js/kendo.ui.core.min.js'],
+            },
+            wwwdist: {
+                src: ["wwwdist/index.html"],
+                ignorePath: /\b(\/dist)\b/g,
+                exclude: ['bower_components/kendo-ui-core/js/kendo.ui.core.min.js'],
             }
         },
         
@@ -81,10 +88,19 @@ module.exports = function (grunt) {
                     src: [
                         "*.html",
                         "views/*.html",
-                        "scripts/*.js",
-                        "scripts/controllers/*.js"
+                        //"scripts/*.js",
+                        //"scripts/controllers/*.js"
                     ]
-                }]
+                },
+                {
+                    expand: true, 
+                    flatten: true, 
+                    src: ['bower_components/bootstrap/fonts/**'],
+                    dest: 'wwwdist/fonts', 
+                    filter: 'isFile'
+                    
+                },
+                ]
             }
         },
         
@@ -138,6 +154,18 @@ module.exports = function (grunt) {
                     declaration: false,
                     ignoreError: false
                 }
+            },
+            
+            nodeModules: {
+                src: ["custom_modules/**/*.ts"],
+                options: {
+                    module: 'amd', //or commonjs
+                    target: 'es5', //or es3
+                    basePath: '',
+                    sourcemap: false,
+                    declaration: false,
+                    ignoreError: false
+                }
             }
         },
         
@@ -149,7 +177,11 @@ module.exports = function (grunt) {
             },
             typescript: {
                 files: ['scripts/**/*.ts'],
-                tasks: ['typescript:dev']
+                tasks: ['typescript:dev', 'typescript:nodeModules']
+            },
+            nodeTypescript: {
+                files: ['custom_modules/**/*.ts'],
+                tasks: ['typescript:nodeModules']
             },
             js: {
                 files: [
@@ -184,10 +216,11 @@ module.exports = function (grunt) {
         
         //Minification CSS
         cssmin: {
-            options: {
-                sourceMap: true
-            },
+            
             target: {
+                options: {
+                    sourceMap: true
+                },
                 files: [{
                     expand: true,
                     cwd: 'dist/css',
@@ -213,18 +246,18 @@ module.exports = function (grunt) {
         },
         
         useminPrepare: {
-            html: 'wwwdist/index.html',
+            html: 'wwwroot/index.html',
             options: {
-                dest: 'wwwdist/',
-                flow: {
-                    html: {
-                        steps: {
-                            js: ['concat', 'uglifyjs'],
-                            css: ['cssmin']
-                        },
-                        post: {}
-                    }
-                }
+                dest: 'wwwdist'
+                // flow: {
+                //     html: {
+                //         steps: {
+                //             js: ['concat', 'uglifyjs'],
+                //             css: ['cssmin']
+                //         },
+                //         post: {}
+                //     }
+                // }
             }
         },
         
@@ -243,7 +276,8 @@ module.exports = function (grunt) {
     grunt.registerTask("server", [
         "clean:dev",
         "bower:install",
-        "wiredep",
+        "bowerInstall:target",
+        //"wiredep",
         "copy:dev",
         "less:dev",
         "typescript:dev",
@@ -253,7 +287,8 @@ module.exports = function (grunt) {
     
     grunt.registerTask("build", [
         "bower:install",
-        "wiredep",
+        "bowerInstall:target",
+        //"wiredep",
         "copy:dev",
         "less:dev",
         "typescript:dev"
@@ -274,15 +309,17 @@ module.exports = function (grunt) {
     ]);
     
     grunt.registerTask("wwwdist", [
+        "build",
         "clean:wwwdist",
-        "bower:wwwdist",
-        "wiredep",
+        //"bower:wwwdist",
+        //"wiredep",
         "copy:wwwdist",
-        "less:wwwdist",
-        "typescript:wwwdist",
+        "bowerInstall:wwwdist",
+        //"less:wwwdist",
+        //"typescript:wwwdist",
         "useminPrepare",
         'concat:generated',
-        //'cssmin:generated',
+        'cssmin:generated',
         'uglify:generated',
         "usemin"
     ]);

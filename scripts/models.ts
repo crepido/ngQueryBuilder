@@ -111,7 +111,7 @@ module tsApp {
                 return "true" === this.value.toLowerCase();
             }
             else if (this.field.type === FieldTypes.dateTime) {
-                return "ISODate(\"" + this.value.toISOString() + "\")";
+                return this.value.toISOString();
             }
             else {
                 return this.value;

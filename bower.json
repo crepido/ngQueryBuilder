@@ -13,10 +13,20 @@
   },
   "exportsOverride": {
     "bootstrap": {
-      "/": "dist"
+      "css": ["dist/css/bootstrap.css", "dist/css/bootstrap.css.map"],
+      "fonts": "dist/fonts/",
+      "js": "dist/js/bootstrap.js"
     },
     "kendo-ui-core": {
-      "js": "js/kendo.ui.core.min.js",
+      "js": [
+        "src/js/kendo.core.js",
+        "src/js/kendo.calendar.js",
+        "src/js/kendo.popup.js",
+        "src/js/kendo.datepicker.js",
+        "src/js/kendo.timepicker.js",
+        "src/js/kendo.angular.js",
+        "src/js/kendo.datetimepicker.js"
+      ],
       "css": [
         "styles/kendo.common.min.css", 
         "styles/kendo.default.min.css",

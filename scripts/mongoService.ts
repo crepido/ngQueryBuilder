@@ -65,6 +65,45 @@ module tsApp {
             ];
         }
         
+        generatePlain(group: Group) {
+            if (!group.logicalOperator)
+                throw "Logical Operator is mandatory!";
+            
+            var subGroups = [];
+            var rules = [];
+            $.each(group.items,(i, item) => {
+                if (item instanceof Group) {
+                    subGroups.push(this.generatePlain(item));
+                }
+                else if (item instanceof Rule) {
+                    var ruleData = this.generateRulePain(item);
+                    if(ruleData)
+                        rules.push(ruleData);
+                }
+            });
+
+            var query = {
+                operator: group.logicalOperator.operator,
+                subGroups: subGroups,
+                rules: rules
+            };
+            return query;
+        }
+
+        generateRulePain(rule: Rule) {
+            if (rule.isValid()) {
+                var query = {
+                    field: rule.field.name,
+                    type: rule.field.type,
+                    operator: rule.comparison.operator,
+                    value: rule.getConvertedValue()
+                };
+                
+                return query;
+            }
+            return null;
+        }
+        
         
         generate(group: Group) {
             // if (!this.selectedDocumentType)
@@ -99,6 +138,7 @@ module tsApp {
             }
             return null;
         }
+        
         
         generateReadable(group: Group) : string {
             // if (!this.selectedDocumentType)

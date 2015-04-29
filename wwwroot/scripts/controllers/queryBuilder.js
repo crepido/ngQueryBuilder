@@ -27,6 +27,7 @@ angular.module('testAppApp')
         $scope.selectedDocumentType = queryService.knownDocuments[0];
 
         $scope.jsonQuery = "";
+        $scope.jsonQueryPlain = "";
         $scope.jsonData = "";
         $scope.readable = "";
         $scope.queryString = "";
@@ -44,6 +45,9 @@ angular.module('testAppApp')
                 $scope.jsonQuery = $scope.queryName + "\n" +
                     $scope.selectedDocumentType.name + "\n" +
                     JSON.stringify(query, null, 4);
+                    
+                var query2 = queryService.generatePlain($scope.data[0]);
+                $scope.jsonQueryPlain = JSON.stringify(query2, null, 4);
                     
                 $scope.readable = queryService.generateReadable($scope.data[0]);
                 
@@ -92,7 +96,7 @@ angular.module('testAppApp')
         $scope.queryResult = "";
         $scope.executeQuery = function () {
             $.getJSON('/executeQuery', 
-                queryService.generate($scope.data[0])
+                queryService.generatePlain($scope.data[0])
             ).done(function(data) {
                 $scope.queryResult = JSON.stringify(data, null, 4);
                 if (!$scope.$$phase) {
@@ -105,7 +109,7 @@ angular.module('testAppApp')
         $scope.testQuery = function () {
             $.getJSON($scope.restRoot + 'logdata?callback=?', 
                 {
-                    advanceQuery: queryService.generate($scope.data[0])
+                    advanceQuery: queryService.generatePlain($scope.data[0])
                 }
             ).done(function(data) {
                 $scope.testQueryResult = JSON.stringify(data, null, 4);

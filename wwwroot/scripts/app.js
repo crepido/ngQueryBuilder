@@ -20,13 +20,13 @@ angular
     'ui.tree',
     'kendo.directives'
   ])
-  .config(function ($routeProvider) {
+  .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
         .when('/', {
             templateUrl: 'views/queryBuilder.html',
             controller: 'QueryBuilderController'
         })
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/error'
         });
-  });
+  }]);

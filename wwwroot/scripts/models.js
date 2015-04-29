@@ -90,7 +90,7 @@ var tsApp;
                 return "true" === this.value.toLowerCase();
             }
             else if (this.field.type === 4 /* dateTime */) {
-                return "ISODate(\"" + this.value.toISOString() + "\")";
+                return this.value.toISOString();
             }
             else {
                 return this.value;

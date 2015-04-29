@@ -1,12 +1,16 @@
 var express = require('express');
 var app = express();
+var mongo = require('.//custom_modules/mongoModule');
 
 var port = process.env.PORT;
 var ip = process.env.IP;
 var wwwroot = "wwwroot/";
 
+console.log(mongo);
+
 app.get('/executeQuery', function (req, res) {
-    res.send(req.query);
+    var mongoQuery = mongo.translate(req.query);
+    res.send(mongoQuery);
 });
 
 /* serves main page */

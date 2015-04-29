@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html class="no-js">
 <head>
     <meta charset="utf-8">
@@ -6,16 +6,22 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
+    <!-- build:css css/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/angular-ui-tree.min.css" />
     <!-- endbower -->
+    <!-- endbuild -->
+    
+    <!-- build:css css/kendo.css -->
     <link rel="stylesheet" href="bower_components/kendo-ui-core/css/kendo.common.min.css" />
     <link rel="stylesheet" href="bower_components/kendo-ui-core/css/kendo.default.min.css" />
     <link rel="stylesheet" href="bower_components/kendo-ui-core/css/kendo.black.min.css" />
-    
+    <!-- endbuild -->
 
+    <!-- build:css css/my.css -->
     <link rel="stylesheet" href="css/base.css">
+    <!-- endbuild -->
 </head>
 <body ng-app="testAppApp">
     <!--[if lt IE 7]>
@@ -62,7 +68,7 @@
        ga('send', 'pageview');
     </script>
 
-    <!-- build:js(.) scripts/vendor.js -->
+    <!-- build:js js/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
@@ -72,15 +78,25 @@
     <script src="bower_components/angular-ui-tree/angular-ui-tree.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/linqjs/linq.js"></script>
-    <script src="bower_components/kendo-ui-core/js/kendo.ui.core.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
+    <!-- build:js js/kendo.js -->
+    <script src="bower_components/kendo-ui-core/js/kendo.core.js"></script>
+    <script src="bower_components/kendo-ui-core/js/kendo.angular.js"></script>
+    <script src="bower_components/kendo-ui-core/js/kendo.calendar.js"></script>
+    <script src="bower_components/kendo-ui-core/js/kendo.popup.js"></script>
+    <script src="bower_components/kendo-ui-core/js/kendo.datepicker.js"></script>
+    <script src="bower_components/kendo-ui-core/js/kendo.timepicker.js"></script>
+    <script src="bower_components/kendo-ui-core/js/kendo.datetimepicker.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js js/my.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/models.js"></script>
     <script src="scripts/mongoService.js"></script>
-    <!--<script src="scripts/test.js"></script>-->
     <script src="scripts/controllers/queryBuilder.js"></script>
+    <!-- endbuild -->
     
 </body>
 </html>
