@@ -20,6 +20,14 @@ $ npm install -g bower
 $ npm install -g grunt-cli
 ```
 
+#### TSD (Optional)
+This is just a package manager for TypeScript definitions.
+[Install TSD](http://definitelytyped.org/tsd/)
+
+```sh
+$ npm install tsd -g
+```
+
 Setup
 ------
 Run the **build** task in **grunt** to download all bower packages and to build project to **wwwroot**.
