@@ -65,3 +65,35 @@ $ node server
 $ grunt server
 ```
 
+Used Grunt Tasks
+======
+* **grunt-bower-task**
+  * ...
+* **grunt-bower-install**
+  * Installs packages that exists in bower.json.
+* **grunt-contrib-less**
+  * Compiles less into css.
+* **grunt-contrib-copy**
+  * Copies files from one directory to another.
+* **grunt-wiredep**
+  * Inserts `script` tags for bower components into html file. 
+* **grunt-typescript**
+  * Compiles TypeScript files into JavaScript.
+* **grunt-contrib-watch**
+  * Tracks file changes and runs grunt tasks if files are updated.
+* **grunt-contrib-connect**
+  * Simple webserver.
+* **grunt-contrib-uglify**
+  * Uglifies JavaScript.
+* **grunt-contrib-cssmin**
+  * Minifies Css.
+* **grunt-contrib-clean**
+  * Cleans/Removes directory.
+* **grunt-autoprefixer**
+  * Automatically adds vendor specific prefixes like `-moz-` and `-ms-`. 
+* **grunt-usemin**
+  * Task to compile released version, uses for example **concat**, **uglify** and **cssmin**.
+* **grunt-contrib-concat**
+  * Bundles files.
+* **grunt-filerev**
+  * Adds ending file revision in file name. Caching purpose.
