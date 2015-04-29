@@ -68,7 +68,7 @@ $ grunt server
 Used Grunt Tasks
 ======
 * **grunt-bower-task**
-  * ...
+  * Inserts `script` tags for bower components into html file. 
 * **grunt-bower-install**
   * Installs packages that exists in bower.json.
 * **grunt-contrib-less**
