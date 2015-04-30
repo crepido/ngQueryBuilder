@@ -1,7 +1,12 @@
 ngQueryBuilder
 ======
-
-[Git - The simple guide, no deep shit ;)](http://rogerdudler.github.io/git-guide/)
+Links
+------
+* [Git - The simple guide, no deep shit ;)](http://rogerdudler.github.io/git-guide/)
+* [Travis CI](https://travis-ci.org/)
+* [Cloud 9](https://c9.io/)
+* [Heroku](https://heroku.com/)
+* [Yeoman](http://yeoman.io/)
 
 Requirements
 ------
