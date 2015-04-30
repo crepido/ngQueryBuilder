@@ -1,6 +1,8 @@
 ngQueryBuilder
 ======
 
+[Git - The simple guide, no deep shit ;)](http://rogerdudler.github.io/git-guide/)
+
 Requirements
 ------
 #### node & npm
