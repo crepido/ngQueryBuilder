@@ -2,14 +2,15 @@
   "name": "WebApplication1",
   "private": true,
   "dependencies": {
-    "angular": "^1.3.15",
+    "angular": "~1.3.15",
     "bootstrap": "3.3.4",
     "angular-bootstrap": "^0.12.1",
     "jquery-ui": "^1.11.4",
     "angular-ui-tree": "^2.2.0",
     "angular-route": "^1.3.15",
     "linqjs": "^3.0.4-beta",
-    "kendo-ui-core": "~2015.1.422"
+    "kendo-ui-core": "~2015.1.422",
+    "pouchdb": "~3.4.0"
   },
   "exportsOverride": {
     "bootstrap": {
@@ -39,7 +40,7 @@
     }
   },
   "resolutions": {
-    "angular": ">= 1.2.0"
+    "angular": "~1.3.15"
   },
   "devDependencies": {
     "qunit": "~1.18.0"

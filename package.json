@@ -25,6 +25,8 @@
     "grunt-usemin": "^3.0.0"
   },
   "scripts": {
-    "test": "grunt test --verbose --force"
-  }
+    "test": "grunt test --verbose --force",
+    "postinstall": "bower install && grunt build"
+  },
+  "cacheDirectories": ["node_modules", "bower_components"]
 }
