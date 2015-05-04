@@ -21,6 +21,10 @@
     "express": "^4.12.3",
     "grunt-contrib-connect": "^0.10.1",
     "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-qunit": "^0.7.0",
     "grunt-usemin": "^3.0.0"
-  }
+  },
+  "scripts": {
+    "test": "grunt test --verbose --force"
+  },
 }

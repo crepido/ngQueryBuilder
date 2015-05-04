@@ -265,7 +265,15 @@ module.exports = function (grunt) {
             html: ['wwwdist/index.html']
         },
         
+        qunit: {
+            files: ['test/index.html']
+        }
     });
+    
+    grunt.registerTask("test", [
+        //"connect:testserver",
+        "qunit"
+    ]);
 
     // This command registers the default task which will install bower packages into wwwroot/lib
     grunt.registerTask("default", ["bower:install"]);
@@ -340,4 +348,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-filerev');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 };
