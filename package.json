@@ -18,6 +18,7 @@
     "tsd": "^0.5.7"
   },
   "dependencies": {
+    "bower": "^1.4.1",
     "express": "^4.12.3",
     "grunt-contrib-connect": "^0.10.1",
     "grunt-contrib-cssmin": "^0.12.2",
@@ -28,5 +29,8 @@
     "test": "grunt test --verbose --force",
     "postinstall": "bower install && grunt build"
   },
-  "cacheDirectories": ["node_modules", "bower_components"]
+  "cacheDirectories": [
+    "node_modules",
+    "bower_components"
+  ]
 }
