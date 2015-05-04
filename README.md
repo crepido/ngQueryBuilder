@@ -13,21 +13,21 @@ Requirements
 #### node & npm
 [Install nodejs](https://nodejs.org/download/), npm is included (i think). Also checkout [npm](https://www.npmjs.com/).
 
-#### Bower
+#### ~~Bower~~ (Only if you want it globaly)
 [Install bower](http://bower.io/#install-bower)
 
 ```sh
 $ npm install -g bower
 ```
 
-#### Grunt
+#### ~~Grunt~~ (Only if you want it globaly)
 [Install grunt](https://github.com/gruntjs/grunt-cli/blob/master/README.md)
 
 ```sh
 $ npm install -g grunt-cli
 ```
 
-#### TSD (Optional)
+#### ~~TSD~~ (Only if you want it globaly)
 This is just a package manager for TypeScript definitions.
 [Install TSD](http://definitelytyped.org/tsd/)
 
@@ -37,13 +37,20 @@ $ npm install tsd -g
 
 Setup
 ------
-Run the **build** task in **grunt** to download all bower packages and to build project to **wwwroot**.
+```sh
+$ git clone https://github.com/crepido/ngQueryBuilder.git
+$ cd ngQueryBuilder
+$ npm install
+```
+Installes all **node modules**, **bower components** and builds the project.
+
+
+##### Grunt Tasks
 
 ```sh
 $ grunt build
 ```
-
-##### Other Tasks
+Run the **build** task in **grunt** to download all bower packages and to Builds project to **wwwroot**.
 
 ```sh
 $ grunt wwwdist
@@ -53,7 +60,7 @@ $ grunt wwwdist
 ```sh
 $ grunt watch
 ```
-> Listens for file changes and rebuilds appropriate files out to wwwroot directory.
+> Listens for file changes and rebuilds appropriate files out to **wwwroot** directory.
 
 ```sh
 $ grunt server
@@ -62,13 +69,9 @@ $ grunt server
 
 Run
 ======
-#### NodeJs
+#### NodeJs or Grunt
 ```sh
 $ node server
-```
-
-#### Grunt
-```sh
 $ grunt server
 ```
 
