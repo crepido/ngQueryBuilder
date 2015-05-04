@@ -26,5 +26,5 @@
   },
   "scripts": {
     "test": "grunt test --verbose --force"
-  },
+  }
 }
