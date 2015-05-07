@@ -1,6 +1,6 @@
 {
-  "version": "0.0.0",
-  "name": "",
+  "version": "0.0.1",
+  "name": "ngQueryBuilder",
   "devDependencies": {
     "tsd": "^0.5.7"
   },
