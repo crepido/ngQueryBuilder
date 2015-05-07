@@ -192,6 +192,13 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['copy:dev']
             },
+            test: {
+                files: [
+                    "test/*.js",
+                    "custom_modules/*.js"
+                ],
+                tasks: ['test']
+            }
         },
         
         //Sets up simple webserver
@@ -272,6 +279,7 @@ module.exports = function (grunt) {
     
     grunt.registerTask("test", [
         //"connect:testserver",
+        "typescript:nodeModules",
         "qunit"
     ]);
 
